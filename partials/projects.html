@@ -1,0 +1,52 @@
+<div ng-controller="modalController">
+   <script type="text/ng-template" id="portfolioModal.html">
+        <div class="modal-body">
+            <div class="row well">
+                
+                <div class="col-md-12">
+                    <div style="overflow-x: scroll; overflow-y: hidden; white-space: nowrap;">
+                        <img ng-click="changeImage(image.elementID, 'projectImage')" ng-repeat="image in projectImages" ng-src="{{image.thumbURL}}" class="img-thumbnail" style="margin-right: 25px; margin-bottom: 10px; cursor: pointer;" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8" style="min-height: 500px">
+                    <img id="projectImage" ng-src="{{image}}" class="img-responsive" alt="{{photoCaption}}" />
+                </div>
+                <div class="col-md-4" ng-show="caption">
+                    <div ng-bind-html='caption'></div>
+                </div>
+            </div>
+        </div>
+
+    </script>
+</div>
+
+<div class="row multi-columns-row">
+    <div data-ng-init="loadData('projectGrid', 'photo', 'portfolio', 0, 0)" ng-controller="projectsController as blog" class="col-md-12">
+        <div class="row" style="padding-bottom: 10px;">
+
+            <div class="col-md-12">
+
+               <select  ng-model="selectedOption"
+                        ng-options="option as option.title for option in selectOptions"
+                        ng-change="loadData('projectGrid', 'photo', selectedOption.tag, 0, 0)"
+                        modal-on-change="selectedOption.tag"
+                        overlay-name="#loadingOverlay"
+                        class="form-control">
+               </select>
+
+            </div>
+        </div>
+        <div id="portfolioGrid" class="row" animate-on-change="arBlog" overlay-name="#loadingOverlay">
+
+            <div class="col-md-3" ng-repeat="portfolio in arBlog.portfolioSets" ng-click="open($event, arBlog.portfolioSets, portfolio)">
+                <a ng-controller="modalController" id="{{portfolio.index}}" class="thumbnail" ng-click="open($event, arBlog.portfolioSets, portfolio)">
+                   <div style="background-image: url({{portfolio.previewURL}})" class="img img-responsive" data-photo-set-index="{{portfolio.photoSetIndex}}"></div>
+                </a>
+
+            </div>
+        </div>
+    </div>
+</div>
+        

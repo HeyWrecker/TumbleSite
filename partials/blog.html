@@ -1,0 +1,84 @@
+<!-- Full List of Blog Entries -->
+<div id="articleList" data-ng-init="loadData('blog','', 'blogpost', 0, 10)" ng-controller="blogController as blog">
+    <div id="articleRow" class="row" animate-on-change="arBlog" overlay-name="#loadingOverlay">
+        <div class="col-md-8">
+            <div>
+
+                <article ng-repeat="blog in arBlog.newsBlog | orderBy: 'index'">
+                    <header>
+                        <h3 ng-switch on="blog.postType">
+
+                            <a ng-switch-when="link" href="{{blog.linkURL}}">
+                                {{blog.title}}
+                            </a>
+
+                            <a ng-switch-default ng-controller="blogDetailController" id="{{blog.index}}" ng-click="open($event, arBlog.newsBlog, blog, 'open')" style="cursor: pointer;">
+                                {{blog.title}}
+                            </a>
+                        </h3>
+                        <time itemprop="dateCreated" datetime="{{blog.date}}">{{blog.date | dateToISO | date:'short'}}</time>
+                    </header>
+
+                    <div ng-bind-html='blog.summary'></div>
+                    
+                    <!-- If the post type is a link, display the link button and URL. Otherwise, default to the Read More link for onsite posts. -->
+                    <div ng-switch on="blog.postType">
+                        <a ng-switch-when="link" href="{{blog.linkURL}}" class="btn btn-default">
+                            Link
+                        </a>
+
+                        <a ng-switch-default ng-controller="blogDetailController" id="{{blog.index}}" ng-click="open($event, arBlog.newsBlog, blog, 'open')" class="btn btn-default" style="cursor: pointer;">
+                            Read More
+                        </a>
+                    </div>
+
+                </article>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Pagination Row -->
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-md-3 col-md-offset-5">
+            
+            <div class="pull-right">
+                <button ng-click="loadData('blog', '', 'blogpost', arBlog.prevStart, 10)" class="btn btn-default" ng-show="arBlog.displayPrevStart">
+                    <i class="fa fa-arrow-circle-left fa-1"></i> Previous
+                </button>
+
+                <button ng-click="loadData('blog', '', 'blogpost', arBlog.nextStart, 10)" class="btn btn-default" ng-show="arBlog.displayNextStart">
+                    Next <i class="fa fa-arrow-circle-right fa-1"></i>
+                </button>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!-- Article Detail -->
+<div id="articleDetail" style="display: none;">
+    
+    <div class="row">
+        <div class="col-md-8">
+            <a ng-controller="blogDetailController" ng-click="open($event, arBlog.newsBlog, blog, 'close')" class="" aria-label="Close" style="cursor: pointer;">
+                <span aria-hidden="true">
+                    <i class="fa fa-arrow-circle-left fa-1"></i> Back
+                </span>
+            </a>
+        </div>
+        
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <article>
+                <header>
+                    <h3 id="detailHeader"></h3>
+                    <time id="detailDate" itemprop="dateCreated" datetime=""></time>
+                </header>
+
+                <div id="detailBody"></div>
+            </article>
+        </div>
+    </div>
+    
+</div>
